@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Book Site</title>
+<link href="style.css.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>  
+  <header class="header">
+     <div class="logo">
+       <img src="logo book.png" alt="logo">
+     </div>
+  <!--در سمت راست یه بخش درست میکنه -->
+     <div class="right-section">
+          <a href="#" class="icon-button"><img src="home.png" alt="home"></a>
+          <a href="E:\Uni\HTML\site\shoppingbag.html" class="icon-button"><img src="shoppingbag.png" alt="shop"></a>
+          <a href="E:\Uni\HTML\site\form.html" class="icon-button"><img src="person.png" alt="person"></a>
+          </div>
+  <!-- سرچ -->
+     <div class="header-content">
+      <div class="search-bar">
+       <input type="text" placeholder="search..." class="search-input">
+       <button class="search-button"></button>
+     </div>
+
+      <!--منو -->
+     <nav class="menu">
+       <ul>
+         <li>کتاب های آموزشی
+           <ul class="submenu">
+             <li><a href="oxford.html">Oxford English Learning</a></li>
+             <li><a href="vocabulary.html">Advanced Vocabulary Guide</a></li>
+           </ul>
+         </li>
+
+         <li>کتاب های تست
+           <ul class="submenu">
+             <li><a href="Ielts.html">IELTS Practice Tests</a></li>
+             <li><a href="combridge.html">Cambridge Exam Guides</a></li>
+           </ul>
+         </li>
+
+         <li>کتاب های گرامر
+           <ul class="submenu">
+             <li><a href="basic.html">Basic English Grammer</a></li>
+             <li><a href="perfect.html">Perfect Tenses Explained</a></li>
+           </ul>
+         </li>
+
+          <li>کتاب های داستان
+           <ul class="submenu">
+             <li><a href="Harry.html">Harry Potter</a></li>
+             <li><a href="Greate.html">The Great Gatsby</a></li>
+             <li><a href="pride.html">Pride and prejudice</a></li>
+           </ul>
+         </li>
+       </ul>
+     </nav>
+     </div>
+   </header>
+
+      
+    <section class="home">
+       <div class="home-container">
+       </div>
+   </section>
+   <!-- بخش جدید شامل عکس یا متن و رنگ بکگراند -->
+   <section class="background"></section>
+   <div class="products">
+     <h1>کتاب های پیشنهادی</h1>
+     
+    <!-- لیست کتاب ها -->
+     <div class="book-list">
+       <div class="book">
+         <img src="Eng file.jpg" alt="first book" width="120">
+         <h2>English file book</h2>
+         <p>450,000تومان</p>
+         <button onClick="addToCart('English file', 450000 , 'Eng file.jpg')">افزودن به سبد خرید</button>
+       </div>
+       
+       <div class="book">
+         <img src="Grammer (1).jpg" alt="second book" width="120">
+         <h2>Grammer in use book</h2>
+         <p>500,000تومان</p>
+         <button onClick="addToCart('Grammer in use', 500000 , 'Grammer (1).jpg')">افزودن به سبد خرید</button>
+       </div>
+      </div>
+    </div>       
+    <!-- رفتن به سبد خرید -->
+  <a href="shoppingbag.html"> مشاهده سبد خرید </a>
+  
+    <script>
+	<!-- اطلاعات سبد خرید رو از localStorage میخونه -->
+	  let cart = JSON.parse(localStorage.getItem('cart')) || [];	  
+	 
+	<!-- وقتی صدا زده بشه محصول جدید به سبد اضافه میشه -->
+	   function addToCart(name,price,image){
+		   const existing = cart.find(item => item.name ===name);
+		   
+	<!-- اگر محصول بوده یدونه اضافه و بیشتر از 5 نمیذاره -->
+		   if (existing){
+			   if (existing.quantity < 5){
+				   existing.quantity += 1;
+			   }
+	<!-- اگر محصول نبوده اضافه میکنه -->
+		   } else {
+             cart.push({name: name, price:price , image:image, quantity:1});
+		   }
+    <!-- سبد رو بروز رسانی میکنه -->
+		   localStorage.setItem('cart',JSON.stringify(cart));
+		   
+	<!-- تعداد رو بروز رسانی میکنه -->
+		   updateCartCount();
+	   }
+	<!-- تعداد آیتم های سبد رو نشون میده -->
+	   window.onload = updateCartCount;	   
+		   
+	</script>
+    <!-- تگ فوتر -->
+    <footer class="footer">
+     <p>تماس با ما:02166666666 📞 </p>
+     <p>آدرس: میدان انقلاب، خیابان ژاندارمری 📍 </p>
+     <p> Eng-bookinfo@gmail.com 📧 </p>
+    </footer>
+
+</body>
+</html>

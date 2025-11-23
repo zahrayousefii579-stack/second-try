@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="style.css" rel="stylesheet" type="text/css">
+<title>Shopping Bag</title>
+</head>
+
+<body>
+<!-- بخش هایی ها سبد خرید داخلشونه -->
+ <div class="cart-container"> 
+   <section class="cart-section">
+    <h2>🛒 سبد خرید</h2>
+
+ <!-- پیام وقتی سبد خرید خالیه -->
+    <div id="cart-empty" class="cart-empty">سبد خرید شما خالی است.</div>
+ <!--جدول نمایش محصولات -->
+ <!-- اول مخفیه وقتی اضافه شه نشون میده -->
+    <table id="cart-table" class="cart-table" style="display:none">
+    
+ <!-- عنوان های جدول مثل قیمت و تعداد -->
+      <thead>
+        <tr>
+          <th>کتاب</th>
+          <th>قیمت (تومان)</th>
+          <th>تعداد</th>
+          <th>جمع آیتم</th>
+          <th>حذف</th>
+        </tr>
+      </thead>
+      
+  <!-- بدنه جدول اطلاعات واقعی رو نشون میده -->
+      <tbody id="cart-body"></tbody>
+    </table>
+
+  <!--مجموع کل قیمت ها اول مخفی بعد نشون میده -->
+    <div id="cart-total" class="cart-total" style="display:none">
+      <p><strong>مجموع کل: <span id="total-price">0</span> تومان</strong></p>
+   <!-- دکمه حف و پرداخت -->
+      <div class="cart-actions">
+        <button id="btn-clear" class="btn-clear">حذف همه</button>
+        <a href="checkout.html" class="checkout-btn">پرداخت</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+  <!-- ذخیره و خواندن سبد خرید از مرورگر -->
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const save = () => localStorage.setItem('cart', JSON.stringify(cart));
+  <!-- عدد ها رو خوانا نشون میده با کاما */
+    const fmt  = n => Number(n||0).toLocaleString();
+
+ <!-- تابع نمایش سبد خرید -->
+    function render() {
+		
+ <!-- اینها با اطلاعات سبد خرید پر میشن -->
+      const empty = document.getElementById('cart-empty');
+      const table = document.getElementById('cart-table');
+      const totalBox = document.getElementById('cart-total');
+      const tbody = document.getElementById('cart-body');
+
+<!-- اگر سبد خالی باشه جدول و قیمت مخفی میشن-->
+      if (!cart.length) {
+        empty.style.display = 'block';
+        table.style.display = 'none';
+        totalBox.style.display = 'none';
+        document.getElementById('total-price').textContent = '0';
+        return;
+      }
+<!-- اگر سبد پر باشه پیام سبد خالیه مخفی و جدول و قیمت رو نشون میده -->
+      empty.style.display = 'none';
+      table.style.display = '';
+      totalBox.style.display = '';
+
+<!-- جمع قیمت ها -->
+      tbody.innerHTML = '';
+      let total = 0;
+	  
+<!-- قیمت کل محصول حساب میشه -->
+      cart.forEach((item, i) => {
+        const line = item.price * item.qty;
+        total += line;
+
+<!-- یه ردیف جدید تو جدول ساخته میشه -->
+        tbody.insertAdjacentHTML('beforeend', `
+          <tr>
+<!-- اسم کتاب رو نشون میده -->
+            <td>${item.name}</td>
+<!-- قیمت کتاب رو نشون میده -->
+            <td>${fmt(item.price)}</td>
+<!-- کنترل تعداد محصول-->
+            <td>
+              <div class="qty-controls">
+<!-- دکمه کم کردن -->
+                <button class="btn-qty" onclick="dec(${i})">−</button>
+                <input class="qty-input" type="number" min="1" value="${item.qty}" onchange="setQty(${i}, this.value)"/>
+<!-- دکمه اضافه کردن -->
+                <button class="btn-qty" onclick="inc(${i})">+</button>
+              </div>
+            </td>
+<!-- قیمت کل -->
+            <td>${fmt(line)}</td>
+<!-- دکمه حذف محصول -->
+            <td><button class="btn-remove" onclick="removeItem(${i})">✕</button></td>
+          </tr>
+        `);
+      });
+
+<!-- مجموع قیمت کل سبد رو نشون میده -->
+      document.getElementById('total-price').textContent = fmt(total);
+      save();
+    }
+
+<!-- تابع افزایش تعداد با i یدونه اضافه میشه -->
+    function inc(i){ cart[i].qty++; render(); }
+<!-- تابع کاهش یکی از محصول کم میشه -->
+    function dec(i){ cart[i].qty--; if(cart[i].qty<=0) cart.splice(i,1); render(); }
+<!-- مقدار توسط کاربر وارد میشه -->
+    function setQty(i, val){
+      const q = parseInt(val,10);
+<!-- اگر عدد معتبر نبود حذف میشه اگر معتبر بود اضافه میشه -->
+      if (isNaN(q) || q<=0) { cart.splice(i,1); } else { cart[i].qty = q; }
+      render();
+    }
+<!-- تابع حذف محصول و بروز رسانی -->
+    function removeItem(i){ cart.splice(i,1); render(); }
+
+<!-- دکمه پاک کردن کل سبد که ص بروز رسانی مسشه -->
+    document.getElementById('btn-clear').addEventListener('click', () => {
+      cart = [];
+      render();
+    });
+
+    render();
+  </script>
+			
+</body>
+</html>
+
+

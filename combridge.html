@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Cambridge Exam Guides</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<body class="combridge-page">
+<header>
+    <div class="main-header-content">
+        <div class="logo">
+            <a href="index.html"><img src="logo book.png" alt="logo"></a>
+        </div>
+              <div class="menu-item">
+        <img src="combridge.png" alt="combridge">
+        <div class="menu-item-details">
+          <h3>Cambridge Exam Guides</h3>
+          <span class="price">480,000 تومان</span>
+          <button class="btn-buy" onclick="addToCart('Cambridge Exam Guides', 480000)">🛒   افزودن به سبد </button>
+        </div>
+      </div>
+      <script>
+    function addToCart(name, price) {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        let item = cart.find(product => product.name === name);
+    
+        if (item) {
+            item.qty += 1; 
+        } else {
+            cart.push({ name: name, price: price, qty: 1 });
+        }
+    
+        localStorage.setItem("cart", JSON.stringify(cart));
+        alert(name + " به سبد خرید اضافه شد ✅");
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Harry</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<!-- استایل مخصوص این ص -->
+<body class="harry-page">
+<header>
+    <div class="main-header-content">
+ <!-- لوگوی سایت-->
+        <div class="logo">
+            <a href="index.html"><img src="logo book.png" alt="logo"></a>
+        </div>
+       <div class="menu-item">
+ <!-- نمایش عکس کتاب -->
+        <img src="harry.jpg" alt="harry">
+        <div class="menu-item-details">
+ <!-- عنوان کتاب -->
+          <h3>Harry Potter</h3>
+          <span class="price">200,000 تومان</span>
+ <!-- دکمه افزودن به سبد خرید -->
+          <button class="btn-buy" onclick="addToCart('Harry Potter', 200000)">🛒   افزودن به سبد </button>
+        </div>
+      </div>
+      <script>
+<!-- سبد از حافظه خونده بشه -->
+    function addToCart(name, price) {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+<!-- بررسی میکنه آیا محصول قبلا در سبد بوده یا خیر -->
+        let item = cart.find(product => product.name === name);
+    
+<!-- اگر نبوده با تعداد 1 اضافه میشه -->
+        if (item) {
+            item.qty += 1; 
+        } else {
+            cart.push({ name: name, price: price, qty: 1 });
+        }
+    
+<!-- تعداد رو ذخیره و پیام میدهد -->
+        localStorage.setItem("cart", JSON.stringify(cart));
+        alert(name + " به سبد خرید اضافه شد ✅");
+    }
+</script>
+
+
+</body>
+</html>
